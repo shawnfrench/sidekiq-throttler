@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 shared_examples "incrementing" do
-  it 'increments #count by one' do
+  it 'increments #count by cost' do
     Timecop.freeze do
-      expect { rate_limit.increment }.to change{ rate_limit.count }.by(1)
+      expect { rate_limit.increment }.to change{ rate_limit.count }.by(rate_limit.cost)
     end
   end
 

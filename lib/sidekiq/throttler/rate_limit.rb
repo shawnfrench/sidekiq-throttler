@@ -98,6 +98,13 @@ module Sidekiq
       end
 
       ##
+      # @return [Integer]
+      #   The cost of each job. Defaults to 1
+      def cost
+        @cost ||= [options['cost'].to_i, 1].max
+      end
+
+      ##
       # Check if rate limiting options were correctly specified on the worker.
       #
       # @return [true, false]
@@ -189,7 +196,7 @@ module Sidekiq
       #   The current number of jobs executed.
       def self.increment(limiter)
         Thread.exclusive do
-          limiter.executions.append(limiter.key, Time.now)
+          limiter.executions.append(limiter.key, Time.now, limiter.cost)
         end
         count(limiter)
       end

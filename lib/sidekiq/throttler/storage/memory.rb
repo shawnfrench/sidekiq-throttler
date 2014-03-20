@@ -42,8 +42,13 @@ module Sidekiq
         #
         # @param [Time]
         #   The time to insert
-        def append(key, time)
-          @hash[key] << time
+        #
+        # @param [Count]
+        #   The number of appends (default is 1)
+        def append(key, time, count=1)
+          count.times do
+            @hash[key] << time
+          end
         end
 
         def reset

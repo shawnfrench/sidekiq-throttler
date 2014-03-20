@@ -62,9 +62,14 @@ module Sidekiq
         #
         # @param [Time]
         #   The time to insert
-        def append(key, time)
+        #
+        # @param [Count]
+        #   The number of appends (default is 1)
+        def append(key, time, count=1)
           Sidekiq.redis do |conn|
-            conn.lpush(namespace_key(key), time.to_i)
+            count.times do
+              conn.lpush(namespace_key(key), time.to_i)
+            end
           end
         end
 
